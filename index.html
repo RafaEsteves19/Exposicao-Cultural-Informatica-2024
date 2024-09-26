@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Exposição Cultural Informatica 2024</title>
     <link rel="stylesheet" href="./styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -34,6 +34,7 @@
     <h1 class="title">Exposição Cultural de Informática</h1>
     <br/>
     <h1 class="title2">Linha do Tempo da Era da Comunicação</h1>
+    <button class="senha" id="reset-button">Zerar Likes</button>
     <hr/>
     <hr/>
     <br/>
@@ -193,7 +194,16 @@
     <hr/>
     <hr/>
     <div class="footer">
-        <h3>Alunos Desenvolvedores do Site</h3>
+        <div class="like-display">
+            <p>Gostou? Deixe seu Like para nos ajudar!</p>
+            <div class="like-section">
+                <button id="like-button" class="like-button fire-button">
+                    <i class="fas fa-thumbs-up"></i>
+                </button>
+                <span id="like-count">0</span>
+            </div>
+        </div>
+        <h3>Alunos Desenvolvedores do Site</h3>   
         <div class="footer1">
         <div class="developer">
             <a href="https://www.instagram.com/rafa.esteves.dev?igsh=emxldXZlOXh1bHVk" target="_blank">
