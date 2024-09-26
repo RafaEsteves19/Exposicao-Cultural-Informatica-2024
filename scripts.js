@@ -15,7 +15,6 @@ document.querySelectorAll('nav a').forEach(anchor => {
                 behavior: 'smooth'
             });
 
-            // Oculta a navbar após o clique
             const navbar = document.getElementById("navbar");
             navbar.classList.add("hidden");
         }
