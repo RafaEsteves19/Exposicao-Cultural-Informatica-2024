@@ -33,25 +33,13 @@ function updateLikeCount() {
 }
 
 function handleLikeButtonClick() {
-    let likes = localStorage.getItem('likes') || 0;
+    let likes = parseInt(localStorage.getItem('likes')) || 0; // Ensure likes is a number
     likes++;
     localStorage.setItem('likes', likes);
     updateLikeCount();
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    updateLikeCount();
-    document.getElementById('like-button').addEventListener('click', handleLikeButtonClick);
-});
-
-function handleLikeButtonClick() {
-    let likes = localStorage.getItem('likes') || 0;
-    likes++;
-    localStorage.setItem('likes', likes);
-    updateLikeCount();
-
+    sendLikesToAPI(likes);
+    
     const likeButton = document.getElementById('like-button');
-
     likeButton.classList.remove('fire', 'fire-blue', 'fire-violet');
 
     if (likes > 200) {
@@ -62,6 +50,26 @@ function handleLikeButtonClick() {
         likeButton.classList.add('fire');
     }
 }
+
+function sendLikesToAPI(likes) {
+    fetch('https://exposicao-cultural-2024-en0ypz46e.vercel.app/api/likes', { // Atualizar aqui
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ likes })
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch((error) => {
+        console.error('Erro ao enviar likes para a API:', error);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateLikeCount();
+    document.getElementById('like-button').addEventListener('click', handleLikeButtonClick);
+});
 
 function promptForPassword() {
     const password = prompt("Digite a senha:");
@@ -80,14 +88,10 @@ function promptForNumber() {
         const newLikes = likes + number;
         localStorage.setItem('likes', newLikes);
         updateLikeCount();
+        sendLikesToAPI(newLikes);
     } else {
         alert("Por favor, digite um número válido.");
     }
-}
-
-function updateLikeCount() {
-    const likes = localStorage.getItem('likes') || 0;
-    document.getElementById('like-count').innerText = likes;
 }
 
 document.getElementById('reset-button').addEventListener('click', promptForPassword);
