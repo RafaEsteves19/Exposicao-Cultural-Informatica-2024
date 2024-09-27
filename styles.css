@@ -212,7 +212,7 @@ h5{
 }
 
 .like-button:hover i {
-    color: rgb(81, 81, 81);
+    color: rgb(34, 34, 34);
 }
 
 .like-display{
@@ -221,35 +221,35 @@ h5{
 
 @keyframes fire {
     0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.1); opacity: 0.7; }
+    50% { transform: scale(1.1); opacity: 0.8; }
     100% { transform: scale(1); opacity: 1; }
 }
 
 .fire {
     animation: fire 0.5s infinite alternate;
-    filter: drop-shadow(0 0 10px rgb(255, 115, 0)) drop-shadow(0 0 5px red);
+    filter: drop-shadow(0 0 10px rgb(255, 115, 0)) drop-shadow(0 0 10px red);
 }
 
 @keyframes fire-blue {
     0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.1); opacity: 0.7; }
+    50% { transform: scale(1.1); opacity: 0.8; }
     100% { transform: scale(1); opacity: 1; }
 }
 
 .fire-blue {
     animation: fire-blue 0.5s infinite alternate;
-    filter: drop-shadow(0 0 10px rgb(0, 115, 255)) drop-shadow(0 0 5px rgb(0, 0, 255));
+    filter: drop-shadow(0 0 10px rgb(0, 115, 255)) drop-shadow(0 0 10px rgb(0, 0, 255));
 }
 
 @keyframes fire-violet {
     0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.1); opacity: 0.7; }
+    50% { transform: scale(1.1); opacity: 0.8; }
     100% { transform: scale(1); opacity: 1; }
 }
 
 .fire-violet {
     animation: fire-violet 0.5s infinite alternate;
-    filter: drop-shadow(0 0 10px rgb(255, 0, 255)) drop-shadow(0 0 5px rgb(128, 0, 128));
+    filter: drop-shadow(0 0 10px rgb(255, 0, 255)) drop-shadow(0 0 10px rgb(128, 0, 128));
 }
 
 h3{

@@ -64,17 +64,30 @@ function handleLikeButtonClick() {
 }
 
 function promptForPassword() {
-    const password = prompt("Digite a senha para zerar os likes:");
+    const password = prompt("Digite a senha:");
     if (password === "dev") {
-        resetLikes();
+        promptForNumber();
     } else {
         location.reload();
     }
 }
 
-function resetLikes() {
-    localStorage.setItem('likes', 0);
-    updateLikeCount();
+function promptForNumber() {
+    const likes = parseInt(localStorage.getItem('likes')) || 0;
+    const number = parseInt(prompt("Digite um número:"));
+
+    if (!isNaN(number)) {
+        const newLikes = likes + number;
+        localStorage.setItem('likes', newLikes);
+        updateLikeCount();
+    } else {
+        alert("Por favor, digite um número válido.");
+    }
+}
+
+function updateLikeCount() {
+    const likes = localStorage.getItem('likes') || 0;
+    document.getElementById('like-count').innerText = likes;
 }
 
 document.getElementById('reset-button').addEventListener('click', promptForPassword);
