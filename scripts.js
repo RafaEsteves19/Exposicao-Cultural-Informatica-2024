@@ -1,3 +1,38 @@
+// Supabase configuration
+const url = 'https://vdfjnwgrxtsbsphhpavc.supabase.co'; // Sua URL do Supabase
+const key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkZmpud2dyeHRzYnNwaGhwYXZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc0NjM0NTgsImV4cCI6MjA0MzAzOTQ1OH0.VU0puYZlTm0ivkdgGhxMBASeNlrtUxImdMiFWGPly00';
+const database = supabase.createClient(url, key);
+
+// Função para atualizar o contador de likes
+const updateLikeCount = async () => {
+    const { data, error } = await database.from('likes').select('count');
+
+    if (error) {
+        console.error('Error fetching likes:', error);
+        return;
+    }
+
+    const totalLikes = data.reduce((acc, row) => acc + row.count, 0);
+    document.getElementById('like-count').textContent = totalLikes;
+};
+
+// Função para adicionar likes
+document.getElementById('like-button').addEventListener('click', async () => {
+    const likesToAdd = 1; // Adiciona 1 like por clique
+
+    const { error } = await database.from('likes').insert([{ count: likesToAdd }]);
+
+    if (error) {
+        console.error('Error adding likes:', error);
+    } else {
+        updateLikeCount(); // Atualiza a contagem de likes
+    }
+});
+
+// Inicializa a contagem de likes ao carregar a página
+updateLikeCount();
+
+// Funções para smooth scroll
 document.querySelectorAll('nav a').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         e.preventDefault();
@@ -21,77 +56,19 @@ document.querySelectorAll('nav a').forEach(anchor => {
     });
 });
 
-document.getElementById("menu-button").addEventListener("click", function() {
-    const navbar = document.getElementById("navbar");
-    navbar.classList.toggle("hidden");
-});
-
-function updateLikeCount() {
-    const likeCountElement = document.getElementById('like-count');
-    const likes = localStorage.getItem('likes') || 0;
-    likeCountElement.textContent = `${likes}`;
-}
-
-function handleLikeButtonClick() {
-    let likes = parseInt(localStorage.getItem('likes')) || 0; // Ensure likes is a number
-    likes++;
-    localStorage.setItem('likes', likes);
-    updateLikeCount();
-    sendLikesToAPI(likes);
-    
-    const likeButton = document.getElementById('like-button');
-    likeButton.classList.remove('fire', 'fire-blue', 'fire-violet');
-
-    if (likes > 200) {
-        likeButton.classList.add('fire-violet');
-    } else if (likes > 150) {
-        likeButton.classList.add('fire-blue');
-    } else if (likes > 100) {
-        likeButton.classList.add('fire');
-    }
-}
-
-function sendLikesToAPI(likes) {
-    fetch('https://exposicao-cultural-2024-en0ypz46e.vercel.app/api/likes', { // Atualizar aqui
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ likes })
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch((error) => {
-        console.error('Erro ao enviar likes para a API:', error);
+// Menu toggle
+const init = () => {
+    document.getElementById("menu-button").addEventListener("click", function() {
+        const navbar = document.getElementById("navbar");
+        navbar.classList.toggle("hidden");
     });
-}
 
-document.addEventListener('DOMContentLoaded', () => {
+    // Adiciona evento ao botão de adicionar likes
+    document.getElementById('add-likes').addEventListener('click', addLikes);
+    
+    // Inicializa a contagem de likes ao carregar a página
     updateLikeCount();
-    document.getElementById('like-button').addEventListener('click', handleLikeButtonClick);
-});
+};
 
-function promptForPassword() {
-    const password = prompt("Digite a senha:");
-    if (password === "dev") {
-        promptForNumber();
-    } else {
-        location.reload();
-    }
-}
-
-function promptForNumber() {
-    const likes = parseInt(localStorage.getItem('likes')) || 0;
-    const number = parseInt(prompt("Digite um número:"));
-
-    if (!isNaN(number)) {
-        const newLikes = likes + number;
-        localStorage.setItem('likes', newLikes);
-        updateLikeCount();
-        sendLikesToAPI(newLikes);
-    } else {
-        alert("Por favor, digite um número válido.");
-    }
-}
-
-document.getElementById('reset-button').addEventListener('click', promptForPassword);
+// Espera o DOM estar carregado
+document.addEventListener('DOMContentLoaded', init);
