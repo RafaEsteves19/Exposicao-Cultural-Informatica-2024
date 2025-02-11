@@ -1,16 +1,14 @@
-require('dotenv').config();  // Carrega as variáveis do .env
-import { createClient } from '@supabase/supabase-js'; // Certifique-se de que @supabase/supabase-js está instalado
+require('dotenv').config();
+import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
-
 const database = createClient(supabaseUrl, supabaseKey);
 
-// Função para atualizar o contador de likes
+// Atualiza a contagem de likes
 const updateLikeCount = async () => {
     try {
         const { data, error } = await database.from('likes').select('count');
-
         if (error) throw error;
 
         const totalLikes = data.reduce((acc, row) => acc + row.count, 0);
@@ -20,52 +18,44 @@ const updateLikeCount = async () => {
     }
 };
 
-// Função para adicionar likes
+// Adiciona likes
 const addLikes = async () => {
     try {
-        const likesToAdd = 1;
-        const { error } = await database.from('likes').insert([{ count: likesToAdd }]);
-
+        const { error } = await database.from('likes').insert([{ count: 1 }]);
         if (error) throw error;
-
         updateLikeCount();
     } catch (error) {
         console.error('Error adding likes:', error);
     }
 };
 
-// Inicializa os eventos e a contagem de likes ao carregar a página
-const init = () => {
-    document.getElementById("menu-button").addEventListener("click", function() {
+// Inicializa eventos da navbar e contador de likes
+const initNavbar = () => {
+    document.getElementById("menu-button").addEventListener("click", () => {
         const navbar = document.getElementById("navbar");
         navbar.classList.toggle("hidden");
     });
 
-    document.getElementById('like-button').addEventListener('click', addLikes);
-
     document.querySelectorAll('nav a').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
+        anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             const targetElement = document.querySelector(targetId);
 
             if (targetElement) {
-                const elementHeight = targetElement.offsetHeight;
-                const windowHeight = window.innerHeight;
-                const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - (windowHeight / 2) + (elementHeight / 2);
-
                 window.scrollTo({
-                    top: targetPosition,
+                    top: targetElement.offsetTop,
                     behavior: 'smooth'
                 });
-
-                const navbar = document.getElementById("navbar");
-                navbar.classList.add("hidden");
+                document.getElementById("navbar").classList.add("hidden");
             }
         });
     });
-
-    updateLikeCount(); // Atualiza a contagem de likes
 };
 
-document.addEventListener('DOMContentLoaded', init);
+// Inicializa a aplicação
+document.addEventListener('DOMContentLoaded', () => {
+    initNavbar();
+    updateLikeCount();
+    document.getElementById('like-button').addEventListener('click', addLikes);
+});
